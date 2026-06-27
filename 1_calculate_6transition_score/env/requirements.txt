@@ -1,0 +1,5 @@
+scanpy
+celltypist
+pandas
+numpy
+imbalanced-ensemble
