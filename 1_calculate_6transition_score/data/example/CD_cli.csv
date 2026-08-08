@@ -1,8 +1,0 @@
-sample,age,sex,disease,batch
-gi_sc_55,16.42,Female,CD,pbmc_pool_1
-gi_sc_52,18.0,Male,CD,pbmc_pool_1
-gi_sc_60,17.08,Male,CD,pbmc_pool_1
-gi_sc_27,7.92,Male,CD,pbmc_pool_1
-gi_sc_24,8.92,Female,CD,pbmc_pool_1
-gi_sc_31,10.33,Male,CD,pbmc_pool_1
-gi_sc_39,17.08,Male,CD,pbmc_pool_2

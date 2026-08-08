@@ -19,9 +19,9 @@ This repository implements a workflow for deriving an individual immune transiti
 
 For testing and demonstration, this repository uses single-cell RNA-seq data from:
 
-_Keever-Keigher, M. R., et al. Front Immunol. 2024_ (PMID: 39192974).
+_Imbach KJ et al. Pediatr Rheumatol Online J. 2023_ (PMID: 36793127).
 
-The dataset includes seven Crohn's disease (CD) patients.
+The dataset includes six juvenile idiopathic arthritis (JIA) patients.
 
 
 

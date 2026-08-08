@@ -33,12 +33,12 @@ cli.index = cli.index.astype(str)
 cli = cli.loc[df.columns]
 cli["age_group"] = (cli["age"] > 6).astype(int)
 
-#计算评分
+# Calculate the transition score
 y = cli["age_group"]
 X = df.T
 y_pre =scoring_model.predict(X)
 y_prob = scoring_model.predict_proba(X)[:, 1]
-#整理结果
+
 result=pd.DataFrame({'sample':cli.index,
                      'age':cli['age'],
                   '6_transition_score': y_prob,

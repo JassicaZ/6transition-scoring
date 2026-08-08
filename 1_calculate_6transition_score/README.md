@@ -47,7 +47,7 @@ Alternatively, you can install R and Python locally using the dependency lists i
 ### 1. Pull the Docker image
 
 ```bash
-docker pull zjyplus/6transition_scoring_env
+docker pull zjyplus/6transition_scoring_env:2.0
 ```
 
 
@@ -57,7 +57,7 @@ docker pull zjyplus/6transition_scoring_env
 docker run --rm \
     -v <your_input_folder>:/data \
     -v <your_output_folder>:/results \
-    zjyplus/6transition_scoring_env \
+    zjyplus/6transition_scoring_env:2.0 \
     ./run.sh --run-all \
     --qc-h5ad <your_input_folder>/<your_QC_h5ad>.h5ad \
     --neighbors-h5ad <your_input_folder>/<your_neighbors-h5ad>.h5ad \
@@ -66,15 +66,17 @@ docker run --rm \
 ```
 ####  Example: Run the pipeline using built-in example data:
 ```bash
+unzip ./data/example/JIA_preprocessed.zip -d ./data/example
+unzip ./data/example/JIA_QC.zip -d ./data/example
+
 docker run --rm \
     -v ./data:/data \
     -v ./results:/results \
-    zjyplus/6transition_scoring_env \
+    zjyplus/6transition_scoring_env:2.0 \
     ./run.sh --run-all \
-    --qc-h5ad /data/example/CD_QC.h5ad \
-    --neighbors-h5ad /data/example/CD_preprocessed.h5ad \
-    --clinical-csv ./data/example/CD_cli.csv \
-    --batch-col 'batch' \
+    --qc-h5ad /data/example/JIA_QC.h5ad \
+    --neighbors-h5ad /data/example/JIA_preprocessed.h5ad \
+    --clinical-csv ./data/example/JIA_cli.csv \
     --output-path /results
 ```
 ## Input files
@@ -102,7 +104,7 @@ Required columns:
 - sample ID
 - age
 - sex
-- batch column (specified by `--batch-col`)
+- batch column (optional, specified by `--batch-col`)
 
 
 ## Output
@@ -116,6 +118,6 @@ The pipeline writes results under `--output-path`:
 ## Built-in example data
 
 This repository includes test data under `data/example/`.
-The example dataset is from _Keever-Keigher, M. R., et al. Front Immunol. 2024_ (PMID: 39192974) and contains data from seven Crohn's disease (CD) patients.
+The example dataset is from _Imbach KJ et al. Pediatr Rheumatol Online J. 2023_ (PMID: 36793127) and contains data from six juvenile idiopathic arthritis (JIA) patients.
 
 

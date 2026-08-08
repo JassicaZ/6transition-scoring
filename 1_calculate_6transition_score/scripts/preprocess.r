@@ -30,7 +30,7 @@ read_fread_with_rownames <- function(file, rowname_col = 1) {
   return(df)
 }
 
-# 读取临床信息
+
 cli <- read.csv(cli_path, row.names = 1, stringsAsFactors = FALSE)
 cli$sex <- factor(cli$sex)
 if (!is.null(batch_col) && batch_col != '' && batch_col %in% colnames(cli)) {
@@ -39,9 +39,9 @@ if (!is.null(batch_col) && batch_col != '' && batch_col %in% colnames(cli)) {
   cli$batch <- NULL
 }
 
-# 读取 98 个特征定义
- df_98_feature <- read.csv('./model/selected_features.csv', row.names = 1)
-split_list <- split(df_98_feature$DEG, df_98_feature$celltype)
+
+ df_feature <- read.csv('./model/selected_features.csv', row.names = 1)
+split_list <- split(df_feature$DEG, df_feature$celltype)
 celltypes <- names(split_list)
 
 result_list <- lapply(celltypes, function(celltype_name) {
@@ -55,7 +55,7 @@ result_list <- lapply(celltypes, function(celltype_name) {
     stop(paste0('Empty pseudobulk file for cell type: ', celltype_name))
   }
 
-  # 转换为基因 × 样本矩阵
+  # Convert to gene × sample matrix
   mat <- as.matrix(t(dt))
   sample_names <- colnames(mat)
   missing_samples <- setdiff(sample_names, rownames(cli))
@@ -64,7 +64,7 @@ result_list <- lapply(celltypes, function(celltype_name) {
   }
   cli_sub <- cli[sample_names, , drop = FALSE]
 
-  # 数据清理及 TMM 标准化
+  # TMM normalization
   mat <- mat[rowSums(mat != 0) > 1, , drop = FALSE]
   if (nrow(mat) == 0) {
     stop(paste0('No features remain after filtering zero-expression rows for cell type: ', celltype_name))
@@ -73,7 +73,7 @@ result_list <- lapply(celltypes, function(celltype_name) {
   TMM <- calcNormFactors(d, method = 'TMM')
   mat <- cpm(TMM, log = TRUE, prior.count = 1)
 
-  # 在标准化后的矩阵中筛选出 98 个特征
+  # Select the model's selected features from the normalized pseudobulk matrix
   vars <- split_list[[celltype_name]]
   selected_genes <- intersect(vars, rownames(mat))
   if (length(selected_genes) == 0) {
@@ -82,7 +82,7 @@ result_list <- lapply(celltypes, function(celltype_name) {
   sub_mat <- mat[selected_genes, , drop = FALSE]
   rownames(sub_mat) <- paste0(celltype_name, '_', selected_genes)
 
-  # 计算残差矩阵
+  # Compute residuals for each selected feature
   n_genes <- nrow(sub_mat)
   residuals_mat <- matrix(NA, nrow = n_genes, ncol = nrow(cli_sub))
   rownames(residuals_mat) <- rownames(sub_mat)
